@@ -74,15 +74,18 @@ REGLAS MUY IMPORTANTES:
     const data = await response.json();
 
     if (!response.ok) {
-      console.error(data);
+  console.error("Error Gemini:", data);
 
-      return Response.json(
-        {
-          error: "Error comunicando con Gemini."
-        },
-        { status: 500 }
-      );
-    }
+  return Response.json(
+    {
+      error: "Error comunicando con Gemini.",
+      geminiStatus: response.status,
+      geminiMessage: data?.error?.message || "Sin mensaje de error",
+      geminiCode: data?.error?.code || null
+    },
+    { status: 500 }
+  );
+}
 
     const reply =
       data.candidates?.[0]?.content?.parts?.[0]?.text ||
